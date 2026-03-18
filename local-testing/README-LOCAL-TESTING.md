@@ -67,6 +67,61 @@ formatted consistently alongside your other Spotless rules.
 
 ---
 
+### Troubleshooting: "Task spotlessCheck not found in root project"
+
+This happens when the project stores its Spotless config in a separate
+file (e.g. `gradle/spotless.gradle`) applied with `apply from:`.
+
+**Why it fails:** `spotlessCheck` only exists after the Spotless plugin is
+applied. If the project doesn't declare the plugin in a `plugins {}` block
+or in `buildscript`, Gradle doesn't know about the task.
+
+**Fix — check two things in the target project:**
+
+**1. The plugin must be declared** (in `build.gradle`, not only in
+`gradle/spotless.gradle`):
+
+```groovy
+// build.gradle
+plugins {
+    id 'com.diffplug.spotless' version '6.25.0'   // ← must be here
+    // ...
+}
+
+apply from: 'gradle/spotless.gradle'
+```
+
+**2. Add the `custom` step inside `gradle/spotless.gradle`**, not in
+`build.gradle`, because that's where the `spotless {}` block lives:
+
+```groovy
+// gradle/spotless.gradle
+spotless {
+    groovy {
+        // ... existing steps ...
+
+        custom('spockFormat') { String content ->
+            com.diffplug.spotless.groovy.SpockFormatter.format(content)
+        }
+
+        target 'src/test/groovy/**/*Spec.groovy'
+    }
+}
+```
+
+If the plugin *is* declared but the task still isn't found, try the
+fully-qualified task path:
+
+```bash
+# Lists all spotless tasks to confirm which ones exist:
+./gradlew tasks --all | grep -i spotless
+
+# Run on a specific subproject (if Spotless is only applied there):
+./gradlew :my-subproject:spotlessCheck
+```
+
+---
+
 ## Approach B — Fat JAR CLI tool
 
 Use this when you want to format files outside Gradle, in CI, or in
