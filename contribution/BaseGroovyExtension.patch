@@ -1,0 +1,55 @@
+--- a/plugin-gradle/src/main/java/com/diffplug/gradle/spotless/BaseGroovyExtension.java
++++ b/plugin-gradle/src/main/java/com/diffplug/gradle/spotless/BaseGroovyExtension.java
+@@ -1,5 +1,6 @@
+ import com.diffplug.spotless.groovy.GrEclipseFormatterStep;
+ import com.diffplug.spotless.groovy.ImportSorter;
++import com.diffplug.spotless.groovy.SpockStep;
+ import com.diffplug.spotless.groovy.RemoveSemicolonsStep;
+
+ ...
+
+ 	/** Removes unnecessary semicolons. */
+ 	public void removeSemicolons() {
+ 		addStep(RemoveSemicolonsStep.create());
+ 	}
+
++	/**
++	 * Formats Spock specification blocks so that each block's content is indented
++	 * one extra level beyond the block label itself.
++	 *
++	 * <p>Handles all Spock lifecycle blocks: {@code given}, {@code when},
++	 * {@code then}, {@code and}, {@code where}, {@code expect},
++	 * {@code cleanup}, {@code setup}.  Block labels may include an optional
++	 * description string (e.g. {@code given: "a logged-in user"}).
++	 *
++	 * <pre>
++	 * spotless {
++	 *     groovy {
++	 *         spock()         // default 4-space indent
++	 *     }
++	 * }
++	 * </pre>
++	 */
++	public void spock() {
++		addStep(SpockStep.create());
++	}
++
++	/**
++	 * Formats Spock specification blocks using the given indent size.
++	 *
++	 * <pre>
++	 * spotless {
++	 *     groovy {
++	 *         spock 2         // 2-space indent
++	 *     }
++	 * }
++	 * </pre>
++	 *
++	 * @param indentSize number of spaces per indentation level (must be >= 1)
++	 */
++	public void spock(int indentSize) {
++		addStep(SpockStep.create(indentSize));
++	}
++
+ 	/** Applies GrEclipse formatting. */
+ 	public GrEclipseConfig greclipse() {

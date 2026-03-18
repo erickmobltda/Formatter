@@ -1,0 +1,19 @@
+class DatabaseSpec extends Specification {
+
+    def "should save entity"() {
+        setup:
+            def db = Database.connect()
+
+        given:
+            def entity = new Entity(name: "test")
+
+        when:
+            db.save(entity)
+
+        then:
+            db.findById(entity.id) == entity
+
+        cleanup:
+            db.disconnect()
+    }
+}

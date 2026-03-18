@@ -1,0 +1,13 @@
+class ListSpec extends Specification {
+
+    def "should remove first element"() {
+        given:
+            def list = [1, 2, 3, 4]
+
+        when:
+            list.remove(0)
+
+        then:
+            list == [2, 3, 4]
+    }
+}

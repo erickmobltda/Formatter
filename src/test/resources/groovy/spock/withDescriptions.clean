@@ -1,0 +1,14 @@
+class UserSpec extends Specification {
+
+    def "should authenticate user"() {
+        given: "a registered user"
+            def user = new User(name: "Alice", password: "secret")
+
+        when: "the user provides correct credentials"
+            def result = authService.login("Alice", "secret")
+
+        then: "authentication succeeds"
+            result.isSuccess()
+            result.user == user
+    }
+}

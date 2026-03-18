@@ -1,0 +1,36 @@
+/*
+ * Build file for the SpockStep contribution.
+ *
+ * This mirrors the structure used by Spotless' own lib/ sub-project.
+ * To integrate into the real Spotless repo, the source files move into
+ * lib/src/main/java/... and test files into lib/src/test/java/...
+ */
+plugins {
+    id 'java-library'
+}
+
+group = 'com.diffplug.spotless'
+version = '0.1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spotless lib — the same version you target for the PR
+    compileOnly 'com.diffplug.spotless:spotless-lib:2.43.0'
+
+    // Test dependencies (mirrors Spotless' own test setup)
+    testImplementation 'com.diffplug.spotless:spotless-lib:2.43.0'
+    testImplementation 'com.diffplug.spotless:spotless-testlib:2.43.0'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+    useJUnit()
+}

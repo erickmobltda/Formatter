@@ -1,0 +1,31 @@
+class StackSpec extends Specification {
+
+    def "should push to stack"() {
+        given:
+        def stack = new Stack()
+
+        when:
+        stack.push("hello")
+
+        then:
+        stack.peek() == "hello"
+        stack.size() == 1
+    }
+
+    def "should pop from stack"() {
+        given:
+        def stack = new Stack()
+        stack.push("hello")
+
+        when:
+        def item = stack.pop()
+
+        then:
+        item == "hello"
+        stack.isEmpty()
+    }
+
+    def nonSpockHelper() {
+        return "not a spock method"
+    }
+}

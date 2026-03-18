@@ -1,0 +1,19 @@
+class OrderSpec extends Specification {
+
+    def "should calculate total with tax"() {
+        given:
+        def order = new Order()
+
+        and:
+        def taxRate = 0.10
+
+        when:
+        def total = order.calculateTotal(taxRate)
+
+        then:
+        total > 0
+
+        and:
+        total == order.subtotal * (1 + taxRate)
+    }
+}
