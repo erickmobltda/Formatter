@@ -1,0 +1,42 @@
+// ============================================================
+//  How to use SpockFormatter with Spotless' custom {} step
+// ============================================================
+//
+// Drop this snippet into the build.gradle of any project that
+// already uses Spotless. The formatter has zero external
+// dependencies — it works entirely from the buildSrc class
+// you copied in (see README-LOCAL-TESTING.md).
+// ============================================================
+
+plugins {
+    id 'com.diffplug.spotless' version '6.25.0'
+    // ... your other plugins
+}
+
+spotless {
+    groovy {
+        // --- existing steps you may already have ---
+        // greclipse()
+        // removeSemicolons()
+
+        // --- Spock block indentation ---
+        // 4-space indent (default):
+        custom('spockFormat') { String content ->
+            com.diffplug.spotless.groovy.SpockFormatter.format(content)
+        }
+
+        // 2-space indent projects — pass the size explicitly:
+        // custom('spockFormat') { String content ->
+        //     com.diffplug.spotless.groovy.SpockFormatter.format(content, 2)
+        // }
+
+        // Target only Spock spec files (optional — omit to apply to all Groovy):
+        target 'src/test/groovy/**/*Spec.groovy',
+               'src/test/groovy/**/*Specification.groovy'
+    }
+
+    // If your tests live in a separate source set:
+    // groovyTest {
+    //     custom('spockFormat') { com.diffplug.spotless.groovy.SpockFormatter.format(it) }
+    // }
+}

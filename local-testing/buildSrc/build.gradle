@@ -1,0 +1,4 @@
+// buildSrc/build.gradle — no dependencies needed, SpockFormatter is pure Java
+plugins {
+    id 'java'
+}
