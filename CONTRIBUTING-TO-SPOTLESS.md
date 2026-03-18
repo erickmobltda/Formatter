@@ -5,6 +5,32 @@ Every command is ready to copy and paste.
 
 ---
 
+## Do I need to open an issue first?
+
+**No.** The official `CONTRIBUTING.md` states:
+
+> *"Pull requests are welcome, preferably against `main`."*
+
+There is no requirement to file an issue before a PR. Looking at recent
+merged PRs that added new formatter steps, ~84% were opened directly
+without a linked issue. You can go straight to the PR.
+
+**Optional:** if you want early feedback before doing the work, you can
+open a short issue titled *"Proposal: add spock() step for Spock block
+indentation"* — but it is not required by the project.
+
+---
+
+## What Spotless CI actually checks (must pass before merge)
+
+1. `./gradlew spotlessApply` — the project formats itself with Spotless; your code must comply.
+2. `./gradlew spotbugsMain` — static analysis; CI fails if this fails.
+3. `./gradlew test` — all tests green.
+
+Run these **before** pushing. The commands are in Step 11 of this guide.
+
+---
+
 ## Prerequisites
 
 - Git installed
